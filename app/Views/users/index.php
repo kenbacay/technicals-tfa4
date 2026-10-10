@@ -11,8 +11,9 @@
         <a href="<?= base_url('/') ?>">Home</a> |
         <a href="<?= base_url('about') ?>">About</a> |
         <a href="<?= base_url('customers') ?>">Customer Accounts</a> |
-        <a href="<?= base_url('users') ?>">User Accounts</a>
-    </nav>
+<a href="https://technicals-tfa4.onrender.com/users">
+    User Accounts
+</a>    </nav>
 
     <br>
 

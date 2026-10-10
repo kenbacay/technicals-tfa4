@@ -11,7 +11,7 @@
     <nav>
         <a href="/">Home</a> |
         <a href="/about">About</a> |
-        <a href="/customers">Customer Accounts</a> |
+        <a href="https://technicals-tfa4.onrender.com/customers">Customer Accounts</a> |
 <a href="https://technicals-tfa4.onrender.com/users">
     User Accounts
 </a>    </nav>
