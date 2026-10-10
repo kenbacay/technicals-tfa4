@@ -32,9 +32,8 @@ class Database extends Config
      * Default Database Connection
      * --------------------------------------------------------------------------
      *
-     * The default database connection.
-     *
-     * The actual Render/Aiven values are loaded in the constructor below.
+     * Default values are used locally.
+     * Render values are loaded inside the constructor.
      *
      * @var array<string, mixed>
      */
@@ -70,7 +69,7 @@ class Database extends Config
      * Test Database Connection
      * --------------------------------------------------------------------------
      *
-     * This database connection is used when running PHPUnit database tests.
+     * This connection is used when running PHPUnit database tests.
      *
      * @var array<string, mixed>
      */
@@ -107,67 +106,76 @@ class Database extends Config
      * Constructor
      * --------------------------------------------------------------------------
      *
-     * Load database settings from environment variables.
+     * Loads database settings from environment variables.
+     *
+     * Local variables can remain as the default values above.
+     * Render uses the following variables:
+     *
+     * DB_HOST
+     * DB_PORT
+     * DB_NAME
+     * DB_USER
+     * DB_PASSWORD
+     * DB_DRIVER
+     * DB_ENCRYPT
      */
     public function __construct()
     {
         parent::__construct();
 
         /*
-         * These values come from Render environment variables:
-         *
-         * database.default.hostname
-         * database.default.port
-         * database.default.database
-         * database.default.username
-         * database.default.password
-         * database.default.DBDriver
-         * database.default.encrypt
+         * Database server hostname.
          */
-
-        $this->default['hostname'] = env(
-            'database.default.hostname',
-            $this->default['hostname']
-        );
-
-        $this->default['username'] = env(
-            'database.default.username',
-            $this->default['username']
-        );
-
-        $this->default['password'] = env(
-            'database.default.password',
-            $this->default['password']
-        );
-
-        $this->default['database'] = env(
-            'database.default.database',
-            $this->default['database']
-        );
-
-        $this->default['DBDriver'] = env(
-            'database.default.DBDriver',
-            $this->default['DBDriver']
-        );
-
-        $this->default['port'] = (int) env(
-            'database.default.port',
-            $this->default['port']
-        );
-
-        $this->default['encrypt'] = env(
-            'database.default.encrypt',
-            $this->default['encrypt']
-        );
+        $this->default['hostname'] =
+            getenv('DB_HOST') ?: 'localhost';
 
         /*
-         * Show detailed database errors only in development.
-         * Production hides sensitive error details.
+         * Database server port.
          */
-        $this->default['DBDebug'] = ENVIRONMENT !== 'production';
+        $this->default['port'] =
+            (int) (getenv('DB_PORT') ?: 3306);
 
         /*
-         * Use the test database when running automated tests.
+         * Database name.
+         */
+        $this->default['database'] =
+            getenv('DB_NAME') ?: '';
+
+        /*
+         * Database username.
+         */
+        $this->default['username'] =
+            getenv('DB_USER') ?: '';
+
+        /*
+         * Database password.
+         */
+        $this->default['password'] =
+            getenv('DB_PASSWORD') ?: '';
+
+        /*
+         * Database driver.
+         */
+        $this->default['DBDriver'] =
+            getenv('DB_DRIVER') ?: 'MySQLi';
+
+        /*
+         * Aiven requires an encrypted connection.
+         */
+        $this->default['encrypt'] =
+            filter_var(
+                getenv('DB_ENCRYPT') ?: 'false',
+                FILTER_VALIDATE_BOOLEAN
+            );
+
+        /*
+         * Show detailed errors only outside production.
+         */
+        $this->default['DBDebug'] =
+            ENVIRONMENT !== 'production';
+
+        /*
+         * Use the test database during automated testing.
          */
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
