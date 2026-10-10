@@ -16,9 +16,7 @@
 
     <br>
 
-    <a href="<?= base_url('users/new') ?>">
-        Add New User
-    </a>
+    <a href="/users/new">Add User</a>
 
     <br><br>
 

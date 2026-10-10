@@ -22,8 +22,8 @@
         </div>
     <?php endif; ?>
 
-    <form action="<?= base_url('users/create') ?>" method="post">
-        <?= csrf_field() ?>
+    <form action="/users/create" method="post">
+    <?= csrf_field() ?>
 
         <label for="username">Username:</label><br>
         <input
